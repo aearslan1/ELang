@@ -1,0 +1,3 @@
+/home/egemen/Desktop/Egemen/Software/C++/ELang/build/CMakeFiles/ELang.dir
+/home/egemen/Desktop/Egemen/Software/C++/ELang/build/CMakeFiles/edit_cache.dir
+/home/egemen/Desktop/Egemen/Software/C++/ELang/build/CMakeFiles/rebuild_cache.dir
