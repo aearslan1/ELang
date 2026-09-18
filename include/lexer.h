@@ -69,6 +69,8 @@ enum class TokenType {
     COLON,
     SEMICOLON,
 
+    INCLUDE,
+
 };
 
 struct Token {
