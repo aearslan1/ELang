@@ -2,8 +2,17 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
 
+//Error types
+enum class ErrorType{
+    UnexpectedToken,
+    FaultyFloat,
+    FaultyString,
+    InvalidEscapeSequence,
+    InvalidSymbol
+};
+
+//Token types
 enum class TokenType {
     //Variable and datatypes
     ID,
@@ -11,6 +20,7 @@ enum class TokenType {
     INTEGER,
     FLOAT,
     LIST,
+    BOOL,
     ASSIGN,
     DEFINE,
 
@@ -22,7 +32,7 @@ enum class TokenType {
     // Functions
     FUNCDEFINE,
     RETURN,
-    FUNCINVOKE,
+    ARROW,
 
     // Comparison Operators
     EQUAL,
@@ -35,7 +45,9 @@ enum class TokenType {
     //Operators
     //-Arithmetic Operators
     PLUS,
+    PLUSPLUS,
     MINUS,
+    MINUSMINUS,
     MULT,
     DIVIDE,
     MODULO,
@@ -55,12 +67,14 @@ enum class TokenType {
     //Other
     LPAREN,
     RPAREN,
-    LRACKET,
+    LBRACKET,
     RBRACKET,
     LBRACE,
     RBRACE,
 
     NEWLINE,
+    TAB,
+    SKIP,
     ENDFILE,
     UNKNOWN,
 
@@ -73,6 +87,7 @@ enum class TokenType {
 
 };
 
+//Token class
 struct Token {
     //Token type
     TokenType type;
@@ -86,9 +101,10 @@ struct Token {
 
 
     Token(TokenType type, const std::string& value, int line, int column);
-    void show();
+    void show() const;
 };
 
+//TokenList class
 class TokenList{
     std::vector<Token> tokenList;
 
@@ -99,18 +115,58 @@ class TokenList{
         void show();
 };
 
+//Lexer class
 class Lexer {
     //string index
     unsigned int position;
     std::string source;
+
+
     public:
+        unsigned int line;
+        unsigned int column;
         //get source code
-        explicit Lexer(std::string& source);
+        explicit Lexer(const std::string& source);
 
         //get current char
         char peek() const;
 
         //get current char and resume position
         char advance();
+
+        //get position + offset char
         char look(const int& offset) const;
+
+        char jump (const int& offset);
+        //add 1 to row info and turn to 0 to column
+        void newline();
+};
+
+//LexerError class
+class LexerError{
+    ErrorType type;
+    std::string message;
+    unsigned int line;
+    unsigned int column;
+
+    public:
+        LexerError(ErrorType type, const std::string& message, unsigned int line, unsigned int column);
+        ~LexerError();
+        void report();
+};
+
+//Tokenizer class
+class Tokenizer{
+    Lexer lexer;
+    TokenList tokenList;
+    public:
+        explicit Tokenizer(const std::string& source);
+        Token whitespace(); // NEWLINE, TAB ...
+        Token number(); // INTEGER, FLOAT
+        Token alpha(); // KEYWORDS, ID, FUNCTION
+        Token string(); // "HELLO WORLD!"
+        Token op(); // +, -, *, /, %
+        Token punctuation(); // (, ), [, ], {, }
+
+        TokenList tokenize();
 };
