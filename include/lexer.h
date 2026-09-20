@@ -148,10 +148,13 @@ class LexerError{
     std::string message;
     unsigned int line;
     unsigned int column;
+    std::string source;
 
     public:
-        LexerError(ErrorType type, const std::string& message, unsigned int line, unsigned int column);
+        
+        LexerError(ErrorType type, const std::string& message, unsigned int line, unsigned int column, const std::string& source);
         ~LexerError();
+        std::string errorPart();
         void report();
 };
 
@@ -159,6 +162,8 @@ class LexerError{
 class Tokenizer{
     Lexer lexer;
     TokenList tokenList;
+    std::string source;
+
     public:
         explicit Tokenizer(const std::string& source);
         Token whitespace(); // NEWLINE, TAB ...
