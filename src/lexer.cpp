@@ -466,7 +466,7 @@ Token Tokenizer::punctuation()
     lexer.advance();
     return Token(TokenType::SEMICOLON, ";", lexer.line, lexer.column);
   default:
-    LexerError(ErrorType::UnexpectedToken, "there is a unexpected token",
+    LexerError(ErrorType::UnexpectedChar, "there is a unexpected token",
                lexer.line, lexer.column, source)
         .report();
   }
@@ -512,7 +512,7 @@ TokenList Tokenizer::tokenize()
 
     else{
       if (ch != '\0'){
-        LexerError(ErrorType::UnexpectedToken, "there is a unexpected token", lexer.line, lexer.column, source).report();
+        LexerError(ErrorType::UnexpectedChar, "there is a unexpected char", lexer.line, lexer.column, source).report();
       }
     }
     

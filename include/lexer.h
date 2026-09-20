@@ -5,7 +5,7 @@
 
 //Error types
 enum class ErrorType{
-    UnexpectedToken,
+    UnexpectedChar,
     FaultyFloat,
     FaultyString,
     InvalidEscapeSequence,
