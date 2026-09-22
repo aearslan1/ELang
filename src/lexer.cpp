@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 
+
 /*
    ----TOKEN----
    */
@@ -21,6 +22,14 @@ void Token::show() const
 {
   std::cout << "{type: " << static_cast<int>(type) << " -> "
             << "value: " << value << "} (" << line << ", " << column << ")\n";
+}
+
+std::string Token::getValue() const{
+  return this->value;
+}
+
+TokenType Token::getType() const{
+  return this->type;
 }
 
 /*
@@ -223,9 +232,17 @@ Token Tokenizer::alpha()
       ch = lexer.advance();
     }
   }
+
+  //Variable keywords
   if (parsedAlpha == "id")
     return Token(TokenType::DEFINE, parsedAlpha, lexer.line, lexer.column);
 
+  else if (parsedAlpha == "const")
+    return Token(TokenType::CONST, parsedAlpha, lexer.line, lexer.column);
+
+  else if (parsedAlpha == "ref")
+    return Token(TokenType::REF, parsedAlpha, lexer.line, lexer.column);
+    
   else if (parsedAlpha == "true" || parsedAlpha == "false")
     return Token(TokenType::BOOL, parsedAlpha, lexer.line, lexer.column);
 
