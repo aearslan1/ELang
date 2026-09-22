@@ -16,6 +16,8 @@ enum class ErrorType{
 enum class TokenType {
     //Variable and datatypes
     ID,
+    CONST,
+    REF,
     STRING,
     INTEGER,
     FLOAT,
@@ -102,6 +104,9 @@ struct Token {
 
     Token(TokenType type, const std::string& value, int line, int column);
     void show() const;
+    std::string getValue() const; 
+    TokenType getType() const;
+
 };
 
 //TokenList class
