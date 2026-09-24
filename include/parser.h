@@ -12,7 +12,7 @@ enum class NodeType{
     PURESTRING,
     PUREBOOL,
     PURELIST,
-
+    
     //Statements
     ASSIGMENT,
     IFSTATEMENT,
