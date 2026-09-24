@@ -37,10 +37,22 @@ class BinaryExpressionNode : public ASTNode{
         BinaryExpressionNode(ASTNode* left, TokenType op, ASTNode* right);
 };
 
-class Parser{
-    TokenList tokens;
+class TokenStream{
     unsigned int position;
+    TokenList tokens;
 
     public:
-        Parser(TokenList tokens);
+        TokenStream(TokenList tokens);
+
+        Token peek() ;
+        Token advance();
+        Token look(const int& offset);
+};
+
+class Parser{
+    TokenStream tokenStream;
+
+    public:
+        Parser(TokenList tokenStream);
+        ASTNode* parse();
 };
