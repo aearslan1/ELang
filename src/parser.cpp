@@ -22,12 +22,34 @@ BinaryExpressionNode::BinaryExpressionNode(ASTNode* left, TokenType op, ASTNode*
     this->right = right;
 }
 
-//Parser
-Parser::Parser(TokenList tokens){
+//TokenStream
+TokenStream::TokenStream(TokenList tokens){
     this->position = 0;
     this->tokens = tokens;
 }
 
+Token TokenStream::peek(){
+    return tokens.getList()[position];
+}
 
+Token TokenStream::look(const int& offset){
+    return tokens.getList()[position + offset];
+}
 
+Token TokenStream::advance(){
+    return tokens.getList()[++position];
+}
 
+//Parser
+Parser::Parser(TokenList tokenList) : tokenStream(tokenList){
+}
+    
+ASTNode* Parser::parse(){
+    Token token = tokenStream.peek();
+    while (token.getType() != TokenType::ENDFILE)
+    {
+        token = tokenStream.advance();
+    }
+
+    return nullptr;
+}
