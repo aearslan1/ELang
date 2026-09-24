@@ -1,7 +1,29 @@
 #pragma once
 #include "lexer.h"
 #include <string>
+//Node Types
+enum class NodeType{
+    //Main node
+    PROGRAM,
 
+    //DATATYPES
+    PUREINTEGER,
+    PUREFLOAT,
+    PURESTRING,
+    PUREBOOL,
+    PURELIST,
+
+    //Statements
+    ASSIGMENT,
+    IFSTATEMENT,
+    WHILESTATEMENT,
+    LOOPSTATEMENT,
+
+    //FUNCTIONS
+    FUNCTIONDEF,
+    FUNCTIONCALL,
+    RETURNSTATEMENT,
+};
 //ASTNode
 class ASTNode
 {
