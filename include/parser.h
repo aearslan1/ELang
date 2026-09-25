@@ -2,6 +2,10 @@
 #include "lexer.h"
 #include <string>
 //Node Types
+enum class ParserErrorType{
+    UnexpectedToken,
+};
+
 enum class NodeType{
     //Main node
     PROGRAM,
@@ -12,6 +16,9 @@ enum class NodeType{
     PURESTRING,
     PUREBOOL,
     PURELIST,
+    IDENTIFIER,
+    BINARYEXP,
+    UNARYEXP,
     
     //Statements
     ASSIGMENT,
@@ -23,6 +30,18 @@ enum class NodeType{
     FUNCTIONDEF,
     FUNCTIONCALL,
     RETURNSTATEMENT,
+};
+class ParserError{
+    ParserErrorType type;
+    std::string message;
+    Token faultyToken;
+    
+    public:
+        
+        ParserError(ParserErrorType type, const std::string& message, Token faultyToken);
+        ~ParserError();
+        std::string errorPart();
+        void report();
 };
 //ASTNode
 class ASTNode
@@ -69,6 +88,7 @@ class TokenStream{
         Token peek() ;
         Token advance();
         Token look(const int& offset);
+        Token consume(TokenType tokenType);
 };
 
 class Parser{
