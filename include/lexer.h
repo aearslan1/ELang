@@ -4,7 +4,7 @@
 #include <vector>
 
 //Error types
-enum class ErrorType{
+enum class LexerErrorType{
     UnexpectedChar,
     FaultyFloat,
     FaultyString,
@@ -149,7 +149,7 @@ class Lexer {
 
 //LexerError class
 class LexerError{
-    ErrorType type;
+    LexerErrorType type;
     std::string message;
     unsigned int line;
     unsigned int column;
@@ -157,7 +157,7 @@ class LexerError{
 
     public:
         
-        LexerError(ErrorType type, const std::string& message, unsigned int line, unsigned int column, const std::string& source);
+        LexerError(LexerErrorType type, const std::string& message, unsigned int line, unsigned int column, const std::string& source);
         ~LexerError();
         std::string errorPart();
         void report();

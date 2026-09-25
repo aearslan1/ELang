@@ -97,7 +97,7 @@ void Lexer::newline()
    ---LEXERERROR---
    */
 
-LexerError::LexerError(ErrorType type, const std::string &message,
+LexerError::LexerError(LexerErrorType type, const std::string &message,
                        unsigned int line, unsigned int column,
                        const std::string &source)
 {
@@ -200,7 +200,7 @@ Token Tokenizer::number()
     }
     else
     {
-      LexerError(ErrorType::FaultyFloat, "there is a no number after '.'",
+      LexerError(LexerErrorType::FaultyFloat, "there is a no number after '.'",
                  lexer.line, lexer.column, source)
           .report();
     }
@@ -333,7 +333,7 @@ Token Tokenizer::string()
         break;
 
       default:
-        LexerError(ErrorType::InvalidEscapeSequence, "invalid escape sequence",
+        LexerError(LexerErrorType::InvalidEscapeSequence, "invalid escape sequence",
                    lexer.line, lexer.column, source)
             .report();
         break;
@@ -348,7 +348,7 @@ Token Tokenizer::string()
   }
   if (ch == '\0')
   {
-    LexerError(ErrorType::FaultyString, "there is a string that is not closed",
+    LexerError(LexerErrorType::FaultyString, "there is a string that is not closed",
                lexer.line, lexer.column, source)
         .report();
   }
@@ -439,7 +439,7 @@ Token Tokenizer::op()
     return Token(TokenType::GREATER, ">", lexer.line, lexer.column);
 
   default:
-    LexerError(ErrorType::InvalidSymbol, "there is a invalid symbol",
+    LexerError(LexerErrorType::InvalidSymbol, "there is a invalid symbol",
                lexer.line, lexer.column, source)
         .report();
 
@@ -483,7 +483,7 @@ Token Tokenizer::punctuation()
     lexer.advance();
     return Token(TokenType::SEMICOLON, ";", lexer.line, lexer.column);
   default:
-    LexerError(ErrorType::UnexpectedChar, "there is a unexpected token",
+    LexerError(LexerErrorType::UnexpectedChar, "there is a unexpected token",
                lexer.line, lexer.column, source)
         .report();
   }
@@ -529,7 +529,7 @@ TokenList Tokenizer::tokenize()
 
     else{
       if (ch != '\0'){
-        LexerError(ErrorType::UnexpectedChar, "there is a unexpected char", lexer.line, lexer.column, source).report();
+        LexerError(LexerErrorType::UnexpectedChar, "there is a unexpected char", lexer.line, lexer.column, source).report();
       }
     }
     
