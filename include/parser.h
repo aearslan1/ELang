@@ -1,6 +1,9 @@
 #pragma once
 #include "lexer.h"
 #include <string>
+#include <vector>
+#include <memory>
+
 //Node Types
 enum class ParserErrorType{
     UnexpectedToken,
@@ -31,6 +34,8 @@ enum class NodeType{
     FUNCTIONCALL,
     RETURNSTATEMENT,
 };
+
+//ParserError
 class ParserError{
     ParserErrorType type;
     std::string message;
@@ -43,40 +48,14 @@ class ParserError{
         std::string errorPart();
         void report();
 };
+
 //ASTNode
 class ASTNode
 {
     public:
-        virtual ~ASTNode() = default;  
+        virtual ~ASTNode() = default;
 };
 
-class NumberNode : public ASTNode{
-    public:
-        int value;
-        NumberNode(int value);
-};
-
-class FloatNode : public ASTNode{
-    public:
-        double value;
-        FloatNode(double value);
-};
-
-class IdentifierNode : public ASTNode{
-    public:
-        std::string value;
-        IdentifierNode(const std::string& value);
-};
-
-class BinaryExpressionNode : public ASTNode{
-    
-
-    public:
-        ASTNode* left;
-        TokenType op;
-        ASTNode* right;
-        BinaryExpressionNode(ASTNode* left, TokenType op, ASTNode* right);
-};
 
 class TokenStream{
     unsigned int position;
@@ -95,6 +74,27 @@ class Parser{
     TokenStream tokenStream;
 
     public:
-        Parser(TokenList tokenStream);
-        ASTNode* parse();
+        Parser(TokenList tokens);
+        std::unique_ptr<ASTNode> parse();
+
+        std::unique_ptr<ASTNode> parseInteger();
+        std::unique_ptr<ASTNode> parseFloat();
+        std::unique_ptr<ASTNode> parseList();
+        std::unique_ptr<ASTNode> parseString();
+        std::unique_ptr<ASTNode> parseBoolean();
+        std::unique_ptr<ASTNode> parseIdentifier();
+
+        std::unique_ptr<ASTNode> parseExpression();
+        std::unique_ptr<ASTNode> parsePrimary();
+        std::unique_ptr<ASTNode> parseBinaryExpression();
+        std::unique_ptr<ASTNode> parseAssignment();
+        std::unique_ptr<ASTNode> parseIfStatement();
+        std::unique_ptr<ASTNode> parseWhileStatement();
+        std::unique_ptr<ASTNode> parseLoopStatement();
+        std::unique_ptr<ASTNode> parseFunctionDefinition();
+        std::unique_ptr<ASTNode> parseFunctionCall();
+        std::unique_ptr<ASTNode> parseReturnStatement();
+        std::unique_ptr<ASTNode> parseUnaryExpression();
+
 };
+

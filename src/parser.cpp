@@ -9,31 +9,9 @@ ParserError::ParserError(ParserErrorType type, const std::string& message, Token
 ParserError::~ParserError(){ std::exit(1); }
 
 void ParserError::report(){
-    bool columnMode = false;
-    std::cerr << "ParserError at " << __FILE__ << "\n";
+    std::cerr << "ParserError at " << __FILE__ << " in ";
+    std::cerr << "(line: " << faultyToken.line + 1 << ", " << "column: " << faultyToken.column + 1 << ")\n";
     std::cerr << "Type " << static_cast<int>(type) << ": " << message << "\n";
-}
-
-//NumberNode
-NumberNode::NumberNode(int value){
-    this->value = value;
-}
-
-//FloatNode
-FloatNode::FloatNode(double value){
-    this->value = value;
-}
-
-//IdentifierNode
-IdentifierNode::IdentifierNode(const std::string& value){
-    this->value = value;
-}
-
-//BinaryExperssionNode
-BinaryExpressionNode::BinaryExpressionNode(ASTNode* left, TokenType op, ASTNode* right){
-    this->left = left;
-    this->op = op;
-    this->right = right;
 }
 
 //TokenStream
@@ -63,15 +41,16 @@ Token TokenStream::consume(TokenType tokenType){
 }   
 
 //Parser
-Parser::Parser(TokenList tokenList) : tokenStream(tokenList){
+Parser::Parser(TokenList tokens) : tokenStream(tokens){
 }
-    
-ASTNode* Parser::parse(){
+
+std::unique_ptr<ASTNode> Parser::parse(){
     Token token = tokenStream.peek();
+    std::unique_ptr<ASTNode> root = nullptr;
     while (token.getType() != TokenType::ENDFILE)
     {
         token = tokenStream.advance();
     }
-
-    return nullptr;
+    return root;
 }
+
