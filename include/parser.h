@@ -52,11 +52,56 @@ class ParserError{
 //ASTNode
 class ASTNode
 {
+    protected:
+        NodeType type;
     public:
         virtual ~ASTNode() = default;
+        virtual void show() = 0;
 };
 
+//-NumberNode
+class NumberNode : public ASTNode{
+    public:
+        int value;
+        NumberNode(const int& value);
+        void show();
+};
 
+//-FloatNode
+class FloatNode : public ASTNode{
+    public:
+        float value;
+        FloatNode(const float& value);
+        void show();
+};
+
+//-StringNode
+class StringNode : public ASTNode{
+    public:
+        std::string value;
+        StringNode(const std::string& value);
+        void show();
+};
+
+//-BoolNode
+class BoolNode : public ASTNode{
+    public:
+        bool value;
+        BoolNode(const bool& value);
+        void show();
+};
+
+//NodeList
+class NodeList{
+    public:
+        std::vector<std::unique_ptr<ASTNode>> nodes;
+
+        void append(std::unique_ptr<ASTNode> element);
+        std::vector<std::unique_ptr<ASTNode>>& getList();
+        void show();
+};
+
+//TokenStream
 class TokenStream{
     unsigned int position;
     TokenList tokens;
@@ -70,6 +115,7 @@ class TokenStream{
         Token consume(TokenType tokenType);
 };
 
+//Parser
 class Parser{
     TokenStream tokenStream;
 
